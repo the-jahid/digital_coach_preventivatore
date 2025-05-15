@@ -3,11 +3,15 @@ import express, { Request, Response, NextFunction } from 'express';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 import { PrismaClient } from '@prisma/client';
 import {z} from 'zod';
+import cors from 'cors'; // Import the cors middleware
 
 const prisma = new PrismaClient();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+
+// Use the cors middleware to allow requests from any origin
+app.use(cors());
 
 app.use(express.json());
 
