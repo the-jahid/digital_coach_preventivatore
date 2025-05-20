@@ -29,21 +29,19 @@ app.get('/api/v1/health', (_req: Request, res: Response) => {
 
 app.post('/api/v1/items/create', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { name, price } = req.body;
-    // const parsed = itemSchema.parse(req.body);
-
-    // console.log('Parsed data:', parsed);
+    const { name, price, description } = req.body;
 
     const newItem = await prisma.item.create({
       data: {
         name,
         price,
+        description,
       },
     });
 
     res.status(201).json({ status: 'ok', item: newItem });
   } catch (err) {
-    next(err); // passa l'errore al globalErrorHandler
+    next(err);
   }
 });
 
@@ -80,11 +78,11 @@ app.get('/api/v1/items/:id', async (req: Request, res: Response, next: NextFunct
 app.put('/api/v1/items/:id', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
-    const { name, price } = req.body;
+    const { name, price, description } = req.body;
 
     const updatedItem = await prisma.item.update({
       where: { id },
-      data: { name, price },
+      data: { name, price, description },
     });
 
     res.status(200).json({ status: 'ok', item: updatedItem });
